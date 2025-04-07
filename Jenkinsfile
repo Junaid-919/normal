@@ -2,15 +2,23 @@ pipeline {
     agent any
 
     environment {
-        IMAGE_NAME = 'helloworld'  // you can change this to whatever you want
+        IMAGE_NAME = 'helloworld'
+        IMAGE_TAG = 'latest'
     }
 
     stages {
+        stage('Docker Info (Check Daemon)') {
+            steps {
+                echo 'Checking Docker daemon info...'
+                sh 'docker info'
+            }
+        }
+
         stage('Build') {
             steps {
                 script {
-                    echo 'Building Docker Image...'
-                    sh 'docker build -t $IMAGE_NAME .'
+                    echo "Building Docker Image: ${IMAGE_NAME}:${IMAGE_TAG}..."
+                    sh "docker build -t ${IMAGE_NAME}:${IMAGE_TAG} ."
                 }
             }
         }
@@ -18,15 +26,16 @@ pipeline {
         stage('Test') {
             steps {
                 echo 'Running tests...'
-                // Add any test commands if needed
+                // Add test commands here
             }
         }
 
         stage('Deploy') {
             steps {
-                echo 'Image built. You can now see it in Docker Desktop.'
-                sh 'docker images | grep $IMAGE_NAME'
+                echo 'Listing all Docker images...'
+                sh 'docker images'
             }
         }
     }
 }
+
