@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        IMAGE_NAME = 'helloworld!'  // you can change this to whatever you want
+        IMAGE_NAME = 'helloworld'  // you can change this to whatever you want
     }
 
     stages {
