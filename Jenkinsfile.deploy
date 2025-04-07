@@ -1,0 +1,52 @@
+pipeline {
+    agent any
+
+    environment {
+        IMAGE_NAME = "helloworldbyjnd"
+    }
+
+    stages {
+        stage('Set Docker to Minikube') {
+            steps {
+                sh 'eval $(minikube -p minikube docker-env)'
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                sh 'docker build -t $IMAGE_NAME .'
+            }
+        }
+
+        stage('Deploy to Minikube') {
+            steps {
+                script {
+                    // Create deployment YAML dynamically or apply existing
+                    writeFile file: 'kube-deploy.yaml', text: """
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: helloworld-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: helloworld
+  template:
+    metadata:
+      labels:
+        app: helloworld
+    spec:
+      containers:
+      - name: helloworld
+        image: helloworldbyjnd
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 80
+"""
+                    sh 'kubectl apply -f kube-deploy.yaml'
+                }
+            }
+        }
+    }
+}
