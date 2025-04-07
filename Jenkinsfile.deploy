@@ -1,11 +1,4 @@
-pipeline {
-    agent any
-
-    environment {
-        IMAGE_NAME = "helloworldbyjnd"
-    }
-
-    stages {
+def runDeployStages() {
         stage('Set Docker to Minikube') {
             steps {
                 sh 'eval $(minikube -p minikube docker-env)'
@@ -14,7 +7,7 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t $IMAGE_NAME .'
+                sh 'docker build -t helloworldbyjnd .'
             }
         }
 
@@ -48,5 +41,4 @@ spec:
                 }
             }
         }
-    }
 }
