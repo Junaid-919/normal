@@ -1,12 +1,4 @@
-pipeline {
-    agent any
-
-    environment {
-        IMAGE_NAME = 'helloworldbyjnd'
-        IMAGE_TAG = 'latest'
-    }
-
-    stages {
+def runBuildStages() {
         stage('Docker Info (Check Daemon)') {
             steps {
                 echo 'Checking Docker daemon info...'
@@ -17,8 +9,8 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    echo "Building Docker Image: ${IMAGE_NAME}:${IMAGE_TAG}..."
-                    sh "docker build -t ${IMAGE_NAME}:${IMAGE_TAG} ."
+                    echo "Building Docker Image: ${helloworldbyjnd}:${latest}..."
+                    sh "docker build -t ${helloworldbyjnd}:${latest} ."
                 }
             }
         }
@@ -36,6 +28,5 @@ pipeline {
                 sh 'docker images'
             }
         }
-    }
 }
 
