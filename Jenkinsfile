@@ -9,8 +9,6 @@ pipeline {
                 load 'Jenkinsfile.tmp'
             }
         }
-    }
-    stages {
         stage('Run Deploy Jenkinsfile') {
             steps {
                 echo 'Running Jenkinsfile.deploy...'
