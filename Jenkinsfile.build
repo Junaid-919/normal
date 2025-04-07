@@ -30,3 +30,4 @@ def runBuildStages() {
         }
 }
 
+return this
