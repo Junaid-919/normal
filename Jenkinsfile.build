@@ -9,8 +9,8 @@ def runBuildStages() {
         stage('Build') {
             steps {
                 script {
-                    echo "Building Docker Image: helloworldbyjnd:latest..."
-                    sh "docker build -t helloworldbyjnd:latest ."
+                    echo "Building Docker Image: helloworldbyjnd1:latest..."
+                    sh "docker build -t helloworldbyjnd1:latest ."
                 }
             }
         }
