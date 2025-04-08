@@ -1,26 +1,37 @@
 pipeline {
     agent any
 
+    environment {
+        IMAGE_NAME = 'helloworldbyjnd'
+        IMAGE_TAG = 'latest'
+    }
+
     stages {
-        stage('Run Build Jenkinsfile') {
+        stage('Docker Info (Check Daemon)') {
             steps {
-                script {
-                    echo 'Running Jenkinsfile.build...'
-                    sh 'cp Jenkinsfile.build Tempfile && cat Tempfile | tee Jenkinsfile.tmp && rm Tempfile'
-                    def buildFile = load 'Jenkinsfile.tmp'
-                    buildFile.runBuildStages()
-                }
+                echo 'Checking Docker daemon info...'
+                sh 'docker info'
             }
         }
 
-        stage('Run Deploy Jenkinsfile') {
+        stage('Build Docker Image') {
             steps {
-                script {
-                    echo 'Running Jenkinsfile.deploy...'
-                    sh 'cp Jenkinsfile.deploy Tempfile && cat Tempfile | tee Jenkinsfile.tmp && rm Tempfile'
-                    def deployFile = load 'Jenkinsfile.tmp'
-                    deployFile.runDeployStages()
-                }
+                echo "Building Docker Image: ${IMAGE_NAME}:${IMAGE_TAG}..."
+                sh "docker build -t ${IMAGE_NAME}:${IMAGE_TAG} ."
+            }
+        }
+
+        stage('Test') {
+            steps {
+                echo 'Running tests...'
+                // Add your test logic here
+            }
+        }
+
+        stage('List Images') {
+            steps {
+                echo 'Listing all Docker images...'
+                sh 'docker images'
             }
         }
     }
